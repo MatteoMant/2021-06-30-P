@@ -67,8 +67,4 @@ public class Genes {
 		return this.geneId;
 	}
 
-
-	
-	
-
 }
