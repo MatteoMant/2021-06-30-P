@@ -28,7 +28,7 @@ public class Model {
 		
 		// aggiunta archi
 		for (Adiacenza a : dao.getAllAdiacenze()) {
-			Graphs.addEdge(this.grafo, a.getV1(), a.getV2(), a.getTipi().size());
+			Graphs.addEdge(this.grafo, a.getV1(), a.getV2(), a.getPeso());
 		}
 		
 	}

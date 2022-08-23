@@ -61,9 +61,10 @@ public class GenesDao {
 	}
 	
 	public List<Adiacenza> getAllAdiacenze(){
-		String sql = "select c1.Localization as l1, c2.Localization as l2, i.Type as tipo "
-				+ "from classification c1, classification c2, interactions i "
-				+ "where c1.GeneID = i.GeneID1 AND c2.GeneID = i.GeneID2 and c1.Localization != c2.Localization";
+		String sql = "SELECT c1.Localization as l1, c2.Localization as l2, COUNT(DISTINCT(i.Type)) AS peso "
+				+ "FROM classification c1, classification c2, interactions i "
+				+ "WHERE c1.Localization > c2.Localization AND ((c1.GeneID=i.GeneID1 AND c2.GeneID=i.GeneID2) OR (c2.GeneID=i.GeneID1 AND c1.GeneID=i.GeneID2)) "
+				+ "GROUP BY c1.Localization, c2.Localization";
 		List<Adiacenza> result = new LinkedList<>();
 		Connection conn = DBConnect.getConnection();
 
@@ -71,16 +72,8 @@ public class GenesDao {
 			PreparedStatement st = conn.prepareStatement(sql);
 			ResultSet res = st.executeQuery();
 			while (res.next()) {
-				Adiacenza a = new Adiacenza(res.getString("l1"), res.getString("l2"));
-				String tipo = res.getString("tipo");
-				a.addTipo(tipo);
-				if (result.contains(a)) {
-					if (!result.get(result.indexOf(a)).getTipi().contains(tipo)) {
-						result.get(result.indexOf(a)).addTipo(tipo);
-					}
-				} else {
-					result.add(a);
-				}
+				Adiacenza a = new Adiacenza(res.getString("l1"), res.getString("l2"), res.getInt("peso"));
+				result.add(a);
 			}
 			res.close();
 			st.close();

@@ -1,20 +1,16 @@
 package it.polito.tdp.genes.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Adiacenza {
 	
 	private String v1;
 	private String v2;
-	private Set<String> tipi;
-	// private int peso;
+	private int peso;
 	
-	public Adiacenza(String v1, String v2) {
+	public Adiacenza(String v1, String v2, int peso) {
 		super();
 		this.v1 = v1;
 		this.v2 = v2;
-		this.tipi = new HashSet<String>();
+		this.peso = peso;
 	}
 
 	public String getV1() {
@@ -33,14 +29,14 @@ public class Adiacenza {
 		this.v2 = v2;
 	}
 	
-	public void addTipo(String tipo) {
-		this.tipi.add(tipo);
+	public int getPeso() {
+		return peso;
 	}
 
-	public Set<String> getTipi(){
-		return this.tipi;
+	public void setPeso(int peso) {
+		this.peso = peso;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -59,10 +55,17 @@ public class Adiacenza {
 		if (getClass() != obj.getClass())
 			return false;
 		Adiacenza other = (Adiacenza) obj;
-		
-		return ((v1.equals(other.v1) && v2.equals(other.v2)) || (v1.equals(other.v2) && v2.equals(other.v1)));
-		
+		if (v1 == null) {
+			if (other.v1 != null)
+				return false;
+		} else if (!v1.equals(other.v1))
+			return false;
+		if (v2 == null) {
+			if (other.v2 != null)
+				return false;
+		} else if (!v2.equals(other.v2))
+			return false;
+		return true;
 	}
-	
 	
 }
